@@ -4,9 +4,11 @@
 </head>
 <body>
 
+    <!-- <img height="200" src="jackdash/test1.piskel"/>  -->
+
     <script>
 
-
+        console.log("here")
 
         //add objects here 
 
@@ -29,6 +31,12 @@
     };
     var game = new Phaser.Game(config);
 
+    var cursors; 
+
+    var platforms; 
+
+    var ball;
+
 
     // var jack = {
     // // Declare an object literal representing a user
@@ -39,18 +47,82 @@
 
 
 
-    function preload ()
-                {
-            
-        this.load.setBaseURL('http://labs.phaser.io');
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+
+
+
+    function preload () {
+        
+        console.log("this: ", this)
+        this.load.setBaseURL('http://labs.phaser.io');
+        this.load.image('ground', 'src/games/firstgame/assets/platform.png');
+      //   this.load.image('sky', 'assets/skies/space3.png');
+      //   this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+        // this.load.image('red', 'assets/particles/red.png');
         this.load.image('ball', 'assets/sprites/red_ball.png');
+        this.add.image(400, 300, 'sky');
+        // this.load.image('jack', 'test1.piskel');
         // this.load.image('jack', 'http://www.clker.com/cliparts/b/3/b/d/11971252702040963370chris_sharkot_ball.svg.med.png');
     }
+
+    
+
+
+
+
+
+
     function create ()
-    {
+        
+        {/*player = this.physics.add.sprite(300, 300, 'ball');
+
+        player.setBounce(1);
+        player.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('ball', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+});
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'ball', frame: 4 } ],
+            frameRate: 20
+});
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('ball', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+});}*//*{
+         player = this.physics.add.sprite(300, 300, 'ball');
+
+        player.setBounce(1);
+        player.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('ball', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+});
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'ball', frame: 4 } ],
+            frameRate: 20
+});
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('ball', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+});}*/
+       
+        platforms = this.physics.add.staticGroup();
         this.add.image(1420, 800, 'sky');
         var particles = this.add.particles('red');
         var emitter = particles.createEmitter({
@@ -59,25 +131,60 @@
             blendMode: 'ADD'
         });
 
+        
+        platforms.create(400, 568, 'ground'); // .setScale(2).refreshBody();
+       /* platforms.create(400, 568, 'ground').setScale(2).refreshBody();*/
+        platforms.create(600, 400, 'ground');
+        platforms.create(50, 250, 'ground');
+        platforms.create(750, 220, 'ground');
+
+        console.log("what is this: ", ball);
+
+        // debugger
+        ball = this.physics.add.sprite(300, 300, 'ball');
+        ball.setBounce(1);
+        ball.setCollideWorldBounds(true);
+
+        this.physics.add.collider(ball, platforms);
+
+        cursors = this.input.keyboard.createCursorKeys();   
+    }
     
 
 
-    this.add.sprite(300, 300, 'ball');
 
-        // this.add.sprite(0, 0, 'https://www.how-to-draw-funny-cartoons.com/image-files/cartoon-ball-002.jpg');
-        // // var logo = this.physics.add.image(400, 100, 'logo');
-        // logo.setVelocity(100, 200);
-        // logo.setBounce(1, 1);
-        // logo.setCollideWorldBounds(true);
-        // emitter.startFollow(logo); //
-    }
+
+
 
     function update () {
+
+        if (cursors.left.isDown)
+        {
+             ball.setVelocityX(-160);
+
+           
+        }
+        else if (cursors.right.isDown)
+        {
+              ball.setVelocityX(160);
+
+            
+        }
+        else
+        {
+               ball.setVelocityX(0);
+
+            
+        }
+
+        if (cursors.up.isDown && ball.body.touching.down)
+        {
+                ball.setVelocityY(-330);
+        }   
 
 
 
         }
-
 
 
 
